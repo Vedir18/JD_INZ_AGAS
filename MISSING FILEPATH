@@ -1,0 +1,12 @@
+Bird:bird_root
+Bird:bird_wing
+Bird:bird_tail
+Bird:bird_head
+Bird:bird_beak
+Human:human_root
+Human:human_hip
+Human:human_tail
+Human:human_leg
+Human:human_foot
+Human:human_arm
+Human:human_head

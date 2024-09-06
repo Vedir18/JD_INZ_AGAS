@@ -1,0 +1,3 @@
+pose>animation>bake action>visual keying + clear constraints
+
+bpy.ops.nla.bake(frame_start=1, frame_end=30, visual_keying=True, clear_constraints=True, bake_types={'POSE'})
