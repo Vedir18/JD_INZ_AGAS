@@ -58,6 +58,7 @@ bl_info = {
 
 import bpy
 from .AddonPropertiesPanel import AGAS_Panel_Properties
+from .CustomBonePropertyPanel import AGAS_CustomBonePropertyPanel_Properties
 from . import auto_load
 
 auto_load.init()
@@ -65,7 +66,9 @@ auto_load.init()
 def register():
     auto_load.register()
     bpy.types.Scene.agas_panel_prop = bpy.props.PointerProperty(type=AGAS_Panel_Properties)
+    bpy.types.Scene.agas_custombonepropertypanel_prop = bpy.props.PointerProperty(type=AGAS_CustomBonePropertyPanel_Properties)
 
 def unregister():
     auto_load.unregister()
     del bpy.types.Scene.agas_panel_prop
+    del bpy.types.Scene.agas_custombonepropertypanel_prop
