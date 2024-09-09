@@ -1,4 +1,5 @@
 import bpy
+import glob, os
 
 class CreateBoneListOperator(bpy.types.Operator):
     bl_idname = "object.createbonelist"
@@ -6,21 +7,44 @@ class CreateBoneListOperator(bpy.types.Operator):
     bl_options = {'REGISTER', 'UNDO'}    
 
     def execute(self, context):
-        boneListFile = open(context.preferences.addons[__package__].preferences.listFilePath, "w")
-        for ob in bpy.data.objects:
-            if(ob.type == "ARMATURE"):
-               for bone in ob.data.bones:
-                   boneListFile.write(ob.name + ":" + bone.name + "\n")
-       
+        #clear existing file
+        boneListFile = open(context.preferences.addons[__package__].preferences.animFolder+"\\List.txt", "w")
+        boneListFile.write("")
+        boneListFile.close
+
+        #find fbx files
+        animFolderPath = context.preferences.addons[__package__].preferences.animFolder
+        filesInPath = os.listdir(animFolderPath)
+        fbxFiles = []
+        for file in filesInPath:
+            if(file.endswith(".fbx")):
+                fbxFiles.append(animFolderPath+"\\"+file)
+        print(fbxFiles)
+
+        #import add to bone list and delete
+        for fbxFile in fbxFiles:
+            bpy.ops.import_scene.fbx(filepath=fbxFile)
+            importedObject = bpy.ops.object
+            AddToBoneList(context.preferences.addons[__package__].preferences.animFolder+"\\List.txt")
+            importedObject.delete(use_global=False)
+
         return {'FINISHED'}
     
+def AddToBoneList(listFilePath):
+    boneListFile = open(listFilePath, "a")
+    armature = bpy.context.selected_objects[0]
+    if(armature.type == "ARMATURE"):
+        for bone in armature.data.bones:
+            boneListFile.write(armature.name + ":" + bone.name + "\n")
+    boneListFile.close
+
 class ListFoundSkeletonTypes(bpy.types.Operator):
     bl_idname = "object.listskeletontypes"
     bl_label = "List Skeleton Types"
     bl_options = {'REGISTER'}
 
     def execute(self, context):
-        boneListFile = open(context.preferences.addons[__package__].preferences.listFilePath, "r")
+        boneListFile = open(context.preferences.addons[__package__].preferences.animFolder+"\\List.txt", "r")
         unparsed = boneListFile.read()
         boneList, armList = ParseToBoneList(unparsed)
         print("BONE LIST: \n")

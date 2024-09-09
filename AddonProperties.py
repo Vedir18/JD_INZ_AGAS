@@ -8,12 +8,6 @@ class AGASProperties(AddonPreferences):
     # when defining this in a submodule of a python package.
     bl_idname = __package__
 
-    listFilePath : StringProperty(
-            name="list File Path",
-            subtype='FILE_PATH',
-            default="MISSING FILEPATH",
-            )
-    
     animFolder : StringProperty(
         name="Animation Folder",
         subtype="FILE_PATH",
@@ -54,12 +48,10 @@ class OBJECT_OT_AGAS_set_preferences(Operator):
         addon_prefs = user_preferences.addons[__package__].preferences
 
         match self.propertyID:
-            case 0: 
-                addon_prefs.listFilePath = self.newPath
             case 1:
                 addon_prefs.animFolder = self.newPath
 
-        print("PRINTING NEW ADDON PREFS: \n listFilePath: " + addon_prefs.listFilePath + "\n animPath: " + addon_prefs.animFolder)
+        print("PRINTING NEW ADDON PREFS: \n listFilePath: " + addon_prefs.animFolder+"\\List.txt" + "\n animPath: " + addon_prefs.animFolder)
 
         return {'FINISHED'}
     

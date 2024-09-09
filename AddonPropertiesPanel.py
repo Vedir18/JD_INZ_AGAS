@@ -21,7 +21,7 @@ class VIEW3D_PT_properties_panel(bpy.types.Panel):
 
     def draw(self, context):
         addonprefs=context.preferences.addons[__package__].preferences
-        addonFilepath = addonprefs.listFilePath
+        addonFilepath = addonprefs.animFolder+"\\List.txt"
         addonAnimationsFolder = addonprefs.animFolder
         row = self.layout.row()
         row.label(text="Filepath: " + addonFilepath)
@@ -30,9 +30,6 @@ class VIEW3D_PT_properties_panel(bpy.types.Panel):
         row = self.layout.row()
         row.prop(context.scene.agas_panel_prop, "path")
         row = self.layout.row()
-        listSetter = row.operator("object.agas_set_preferences", text="SetListFilePath")
-        listSetter.newPath = context.scene.agas_panel_prop.path
-        listSetter.propertyID = 0
         row = self.layout.row()
         animSetter = row.operator("object.agas_set_preferences", text="Set AnimFolder")
         animSetter.newPath = context.scene.agas_panel_prop.path
