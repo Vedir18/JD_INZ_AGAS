@@ -42,4 +42,6 @@ class AGAS_CustomBonePropertyPanel(bpy.types.Panel):
         row = layout.row()
         boneSetter = row.operator("bone.setcustomboneproperty")
         boneSetter.newBoneData = str(context.scene.agas_custombonepropertypanel_prop.testPanelEnum)
+        row = layout.row()
+        row.operator("object.listusedskeletons")
 

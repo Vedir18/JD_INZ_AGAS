@@ -55,16 +55,16 @@ class OBJECT_OT_AGAS_set_preferences(Operator):
 
         return {'FINISHED'}
     
+from .CustomBoneProperty import GetUsedSkeletonsList
 class OBJECT_OT_AGAS_import_animations(Operator):
     bl_idname = "object.importanimations"
     bl_label = "Addon Preferences Import Animation"
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        user_preferences = context.preferences
-        addon_prefs = user_preferences.addons[__package__].preferences
-        bpy.ops.import_scene.fbx( filepath = addon_prefs.animFolder )
-
+        usedSkeletons = GetUsedSkeletonsList()
+        for skeleton in usedSkeletons:
+            bpy.ops.import_scene.fbx(filepath=context.preferences.addons[__package__].preferences.animFolder + "\\"+skeleton+".fbx")
         return {'FINISHED'}
 
 class OBJECT_OT_AGAS_create_contraints(Operator):
@@ -73,18 +73,20 @@ class OBJECT_OT_AGAS_create_contraints(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        scene = context.scene
-        targetArmature = scene.objects.get("HumanSkeleton")
-        currentMode = context.mode
-        if currentMode!='POSE':
-            bpy.ops.object.mode_set(mode='POSE')
+        #scene = context.scene
+        #targetArmature = scene.objects.get("HumanSkeleton")
+        #currentMode = context.mode
+        #if currentMode!='POSE':
+        #    bpy.ops.object.mode_set(mode='POSE')
 
-        bpy.ops.pose.select_all(action='SELECT')
+        #bpy.ops.pose.select_all(action='SELECT')
 
-        for bone in context.selected_pose_bones_from_active_object:
-            bone_rotation = (bone.constraints.get("Copy Rotation") or bone.constraints.new(type='COPY_ROTATION'))
-            bone_rotation.target = targetArmature
-            bone_rotation.subtarget = bone.name
+        #for bone in context.selected_pose_bones_from_active_object:
+        #    bone_rotation = (bone.constraints.get("Copy Rotation") or bone.constraints.new(type='COPY_ROTATION'))
+        #    bone_rotation.target = targetArmature
+        #    bone_rotation.subtarget = bone.name
 
-        bpy.ops.object.mode_set(mode=currentMode)
+        #bpy.ops.object.mode_set(mode=currentMode)
+
+        print("SET CONSTRAINTS TODO")
         return {'FINISHED'}
