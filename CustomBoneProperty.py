@@ -12,7 +12,7 @@ class AGAS_SetCustomBonePropertyOperator(bpy.types.Operator):
     )
 
     def execute(self, context):
-        bone = context.edit_bone
+        bone = context.bone
         bone["AGAS_data"] = self.newBoneData
         return {'FINISHED'}
     
@@ -21,7 +21,6 @@ class AGAS_ListUsedSkeletonsOperator(bpy.types.Operator):
     bl_label = "List used skeletons"
 
     def execute(self, context):
-        
         print(GetUsedSkeletonsList())
         return {'FINISHED'}
     

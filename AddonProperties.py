@@ -73,20 +73,33 @@ class OBJECT_OT_AGAS_create_contraints(Operator):
     bl_options = {'REGISTER', 'UNDO'}
 
     def execute(self, context):
-        #scene = context.scene
-        #targetArmature = scene.objects.get("HumanSkeleton")
-        #currentMode = context.mode
-        #if currentMode!='POSE':
-        #    bpy.ops.object.mode_set(mode='POSE')
+        scene = context.scene
+        currentMode = context.mode
+        if currentMode!='POSE':
+            bpy.ops.object.mode_set(mode='POSE')
 
-        #bpy.ops.pose.select_all(action='SELECT')
+        bpy.ops.pose.select_all(action='SELECT')
 
-        #for bone in context.selected_pose_bones_from_active_object:
-        #    bone_rotation = (bone.constraints.get("Copy Rotation") or bone.constraints.new(type='COPY_ROTATION'))
-        #    bone_rotation.target = targetArmature
-        #    bone_rotation.subtarget = bone.name
+        for bone in context.selected_pose_bones_from_active_object:
+            bone_rotation = (bone.constraints.get("Copy Rotation") or bone.constraints.new(type='COPY_ROTATION'))
+            target, subtarget = SplitCustomData(bone.bone["AGAS_data"])
+            bone_rotation.target = scene.objects.get(target)
+            bone_rotation.subtarget = subtarget
 
-        #bpy.ops.object.mode_set(mode=currentMode)
+        bpy.ops.object.mode_set(mode=currentMode)
 
-        print("SET CONSTRAINTS TODO")
         return {'FINISHED'}
+    
+def SplitCustomData(data):
+    readingArmature = True
+    armatureStr = ""
+    boneNameStr = ""
+    for i in range(len(data)):
+        if(data[i]==":"):
+            readingArmature = False
+        else:
+            if(readingArmature):
+                armatureStr+=data[i]
+            else:
+                boneNameStr+=data[i]
+    return armatureStr, boneNameStr
