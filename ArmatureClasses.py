@@ -1,12 +1,9 @@
-class AGAS_Armature:
-    name=""
-    bones=[]
-    animations=[]
-    
+class AGAS_Armature:    
     def __init__(self):
         self.name=""
         self.bones = []
         self.animations = []
+        
 
     def PrintArmature(self):
         print("ArmatureName: " + self.name)
@@ -18,11 +15,6 @@ class AGAS_Armature:
             print("      " + animation)
 
 class AGAS_Bone:
-    name=""
-    boneType=""
-    followTypes=[]
-    followBone=""
-
     def __init__(self):
         self.name = ""
         self.boneType = ""
@@ -49,6 +41,7 @@ class BoneType(Enum):
     UPPER_HAND_START=7
     UPPER_HAND_PART=8
     LOWER_SPINE_START=9
+    LOWER_SPINE_PART=10
 
 
 import json
@@ -118,9 +111,8 @@ def AGAS_ARMATURE_TO_JSON(armatures, path):
         resultString+="]}\n"
         file.write(resultString)
 
-'''
+
 armatures = JSON_TO_AGAS_Armatures('C:\\Users\\VED\\Desktop\\JD_AGAS\\Animations\\List.json')
 for armature in armatures:
     armature.PrintArmature()
 AGAS_ARMATURE_TO_JSON(armatures, 'C:\\Users\\VED\\Desktop\\JD_AGAS\\Animations\\ListResult.json')
-'''
